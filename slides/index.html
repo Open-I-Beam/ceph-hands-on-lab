@@ -1,0 +1,605 @@
+<!-- {{{ START -->
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Get your hands dirty with OpenStack storage: Ceph</title>
+
+		<meta name="description" content="TODO">
+		<meta name="author" content="Csaba Balazs">
+		<meta name="author" content="Mark Korondi">
+		<meta name="author" content="Zoltan Arnold Nagy">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+		<link rel="stylesheet" href="css/ibm.css" >
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+<!-- }}} -->
+
+<!-- Header & Footer {{{ -->
+<div class="footer">
+	<p>
+		<img src="img/ibm-logo.png" style="height: 0.8em">&nbsp;
+		<small>Get your hands dirty with OpenStack Storage: Ceph — 2015</small>
+	</p>
+</div>
+<!-- }}} -->
+
+<!-- Beginning {{{ -->
+<section data-markdown data-background="img/ibm-background.png" >
+	### Get your hands dirty with OpenStack storage:
+
+	Ceph
+	====
+
+	Csaba Balázs / [bcs@zurich.ibm.com](mailto:bcs@zurich.ibm.com)
+
+	Márk Korondi / [oro@zurich.ibm.com](mailto:oro@zurich.ibm.com)
+
+	Zoltán Arnold Nagy / [nag@zurich.ibm.com](mailto:nag@zurich.ibm.com)
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Legal disclaimer
+
+	<!-- .element: style="font-size: smaller" -->
+	All information contained in this document is subject to change
+	without notice. The products described in this document are
+	generally available via the normal IBM sales channels. The
+	information contained in this document does not affect or change
+	IBM product specifications or warranties. Nothing in this
+	document shall operate as an express or implied license or
+	indemnity under the intellectual property rights of IBM or third
+	parties. All information contained in this document was obtained
+	in specific environments, and is presented as an illustration. The
+	results obtained in other operating environments may vary.
+</script>
+</section>
+
+<section data-markdown>
+	## Agenda
+
+	- What is Ceph?
+	- Ceph and OpenStack
+	- IBM clouds and OpenStack
+	- How does Ceph work?
+	- Hands on!
+</section>
+<!-- }}} -->
+
+<!-- What is Ceph? {{{ -->
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/cover-what-is-ceph.jpg" class="cover" data-state="cover">
+	# What is Ceph?
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## What is Ceph?
+
+	- software defined storage
+	- suitable for cloud environments
+	
+	#### What exactly?
+
+	- object store
+	- block store
+	- file system
+
+	![Ceph Logo](img/ceph-logo.png)       <!--  .element: style="position: absolute; top: 3em; right: 0em; width: 200px" -->
+	![Inktank Logo](img/inktank-logo.png) <!--  .element: style="position: absolute; top: 12em; right: 0em; width: 200px" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Why do we like Ceph?
+
+	- Reliable
+	- Well tested
+	- Fast
+
+	![Its free](img/yes-its-free.png) <!--  .element: class="fragment" style="position: absolute; left: 50%; width: 10em; margin-left: -5.3em" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Why do we need Ceph?
+
+	#### Because every cloud needs storage
+
+	- robust, distributed block and object storage
+	- easy scale out
+	- no single point of failure
+
+	#### But why _Ceph_ exactly?
+
+	- runs on commodity hardware
+	- actively developed and maintained
+	- thriving community
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## But the main reason for Ceph is...
+
+	![OpenStack Logo](img/openstack-logo.png) <!-- .element style="position: relative; left: 50%; width: 6em; margin-left: -3.3em" -->
+
+	> The De Facto Storage Backend for OpenStack
+
+	<!-- .element style="text-align: right" -->
+	Sebastian Han, Ceph Expert
+
+	</script>
+</section>
+<!-- }}} -->
+
+<!-- Ceph and OpenStack {{{ -->
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/cover-ceph-and-openstack.png" class="cover" data-state="cover">
+	# Ceph and OpenStack
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## OpenStack storage
+
+	- ephemeral _(nova)_
+	- images _(glance)_
+	- volumes _(cinder)_
+
+	#### You either need
+
+	- LVM
+	- Proprietary storage  
+		_(iSCSI / FC)_
+	- NFS
+	- GPFS / GlusterFS
+
+	![OpenStack-CNS](img/openstack-compute-network-storage.jpg) <!-- .element style="position: absolute; top: 3em; right: 0em; width: 10em;" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Requirements
+
+	- OpenStack services talk native Ceph APIs.
+		- glance, cinder: `python-rbd`
+
+	- qemu also has native support
+		- Ubuntu, RedHat 7: `qemu` package
+		- RedHat 6: `qemu-rbd` from Ceph
+	</script>
+</section>
+
+
+<section data-markdown>
+	<script type="text/template">
+	## Who uses Ceph for OpenStack?
+
+	#### Short answer
+	~ half of all deployments world wide <!--  .element: class="fragment" data-fragment-index="1"-->
+
+	#### Long answer
+	- Hosting services              <!--  .element: class="fragment" data-fragment-index="2"-->
+	- Research centers              <!--  .element: class="fragment" data-fragment-index="2"-->
+	- Enterprise storage providers  <!--  .element: class="fragment" data-fragment-index="2"-->
+
+	![Fujitsu   Logo](img/fujitsu-logo.gif)   <!-- .element style="position: relative; height: 2em;" class="fragment" data-fragment-index="2" -->
+	![Sandisk   Logo](img/sandisk-logo.png)   <!-- .element style="position: relative; left: 1em; margin-top:-1em; height: 2em;" class="fragment" data-fragment-index="2" -->
+	![Dreamhost Logo](img/dreamhost-logo.png) <!-- .element style="position: absolute; top: 3em; width: 6em; right: 0em;" class="fragment" data-fragment-index="2" -->
+	![Cern      Logo](img/cern-logo.png)      <!-- .element style="position: absolute; top: 5em; width: 6em; right: 0em;" class="fragment" data-fragment-index="2" -->
+	![Suse      Logo](img/suse-logo.jpg)      <!-- .element style="position: absolute; top: 12em; width: 6em; right: 0em;" class="fragment" data-fragment-index="2" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## And of course...
+
+	We at IBM
+
+	![IBM Cloud](img/ibm-cloud.png)      <!-- .element style="position: absolute; left: 50%; width: 10em; max-height: none; margin-left:-5.3em" class="fragment" data-fragment-index="1" -->
+	</script>
+</section>
+<!-- }}} -->
+
+<!-- IBM clouds and OpenStack {{{ -->
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/cover-ibm-and-openstack.jpg" class="cover" data-state="cover">
+	# IBM clouds and OpenStack
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## IBM and OpenStack
+
+	- \#4 contributor in core projects
+	- OpenStack Foundation platinum member
+	- Strong commitment to open cloud technologies
+	</script>
+</section>
+<section data-markdown>
+	<script type="text/template">
+	## IBM OpenStack offerings
+
+	#### IBM Cloud Manager with OpenStack
+	IBM's OpenStack distribution
+
+	#### IBM Cloud OpenStack Services
+	Hosted managed private cloud
+	![ICOS Logo](img/ibm-public-cloud.png)   <!-- .element style="position:absolute; right: 0em; height: 8em; top: 6em" -->
+
+	#### IBM Public OpenStack Cloud
+	Public cloud offering
+
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Beneath it all: [SoftLayer](http://softlayer.com)
+
+	Cloud infrastructure provider
+
+	- acquired by IBM in 2013
+	- 20 DCs around the world
+	- baremetal and virtual hosting
+	- dedicated links between DCs
+
+	![Softlayer Logo](img/softlayer-logo.png)   <!-- .element style="position:absolute; left:50%; width: 12em; margin-left: -6.3em" -->
+	</script>
+</section>
+<!-- }}} -->
+
+<!-- How does Ceph work? {{{ -->
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/cover-how-does-ceph-work.jpg" class="cover" data-state="cover">
+	# How does Ceph work?
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Ceph concepts
+
+	- Ceph is an Object Store               <!-- .element: class="fragment" -->
+		- **RADOS** — Reliable Autonomous Distributed Object Store
+	- It provides several abstraction layers <!-- .element: class="fragment" -->
+		- `librados` (library talks "native ceph")
+		- `radosgw` (S3/Swift compatible REST APIs)
+		- `rbd` (Rados Block Device)
+		- `cephfs` (POSIX-compliant distributed filesystem)
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	![Ceph architecture](img/ceph-int-arch.png) <!-- .element style="position:relative; left:50%; width: 22em; max-height:none; margin-left: -11.3em" class="fragment grow" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Ceph entities
+
+	- Monitors:                              <!-- .element: class="fragment" -->
+		- Maintain cluster membership and state
+		- Provide concensus for distributed decision-making
+		- Small, odd number
+		- Do **not** serve objects
+	- Objects Storage Daemons (OSDs):        <!-- .element: class="fragment" -->
+		- Serve stored objects
+		- Perform peer to peer replication tasks
+		- One per disk
+		- At least three in a cluster
+	![Ceph Entities](img/ceph-int-entities.png) <!-- .element style="position:absolute; right:0em; bottom: 1em; height:6em" class="fragment" -->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Ceph OSD
+	![Ceph OSDs](img/ceph-int-osd.png) <!-- .element style="position:relative; left:50%; width: 15em; max-height:none; margin-left: -7.8em" class="fragment grow" -->
+	</script>
+</section>
+
+
+<section data-markdown>
+	<script type="text/template">
+	## Data distribution
+
+	- Replication methods:                   <!-- .element: class="fragment" -->
+		- placement groups (PG) replicated N times  
+		  _(Each object belongs to a PG)_
+		- erasure coded object chunks placed on (K+M) devices  
+			_(K data-, M coding chunks)_
+	- Objects are automagically              <!-- .element: class="fragment" -->
+		- placed
+		- balanced
+		- migrated
+	</script>
+</section>
+
+
+<section data-markdown>
+	<script type="text/template">
+	## Data placement
+
+	- Physical infrastructure-aware         <!-- .element: class="fragment" -->
+		- OSDs on hosts in racks in rows in datacenters
+	- (pseudo)randomly distributed          <!-- .element: class="fragment" -->
+		- Ensuring balance
+	- Deterministic                         <!-- .element: class="fragment" -->
+		- Ability to retrieve a formerly placed object
+	- Ceph's solution: CRUSH            <!-- .element: class="fragment" -->
+
+
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## CRUSH
+
+	Consistent Replication Under Scalable Hashing
+
+	- decentralized, no lookup tables           <!-- .element: class="fragment" data-autoslide="500"-->
+	- deterministic, repeatable                 <!-- .element: class="fragment" data-autoslide="500"-->
+	- pseudo-random distribution                <!-- .element: class="fragment" data-autoslide="500"-->
+	- implemented in librados                   <!-- .element: class="fragment" data-autoslide="500"-->
+	- stable mapping, limited data migration    <!-- .element: class="fragment" data-autoslide="500"-->
+	- rule-based configuration                  <!-- .element: class="fragment" data-autoslide="500"-->
+	- infrastructure topology aware             <!-- .element: class="fragment" -->
+
+	</script>
+</section>
+
+
+
+<section data-markdown>
+	<script type="text/template">
+	## On the following slides...
+
+	CRUSH example
+
+	- writing to the cluster
+	- reading from the cluster
+	- handling osd failure
+
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	#### Write an object
+	![Crush example 1](img/crush-ex-1.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	#### Retrieve an object
+	![Crush example 2](img/crush-ex-2.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	#### OSD failure (disk error)
+	![Crush example 3](img/crush-ex-3.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 7.5em; max-height:none; "-->
+	#### Data recovery (self-healing)      <!-- .element style="position:absolute;top: 9em;"-->
+	![Crush example 4](img/crush-ex-4.png) <!-- .element style="position:absolute; right:0em; top: 8.5em; height: 7.5em; max-height:none; "-->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	#### Retrieve an object
+	#### (updated CRUSH map)
+	![Crush example 5](img/crush-ex-5.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
+	</script>
+</section>
+
+<section data-markdown data-background="img/yawn.gif" class="cover" data-state="cover">
+	<script type="text/template">
+	# Are we there yet?!
+
+	### Just a couple more minutes... <!-- .element: class="fragment" -->
+</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## How is this suitable for Block?
+
+	Via **RBD** (Rados Block Device)
+
+	- allocate pools
+	- create `rbd` images
+	- `rbd` maps continuous blocks to distributed objects
+	
+	Connect `rbd` images to VMs as volume. Recall: qemu knows native Ceph API
+
+	With `krbd` (`rbd` kernel module) `rbd` 
+	images can be attached as block devices
+
+	- enables legacy applications using Ceph
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	#### Object-Block mapping
+	![Block example](img/rbd.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 15.5em; max-height:none; "-->
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Other details
+
+	- "Writethrough" replication
+		- `ACK` to client only if all N replicas written
+	- "Writeback" journaling
+		- `ACK` to client as soon as journal written  
+		   (will flush to disk later)
+		- Thus jounal is best on seperate SSDs
+	- Cache tiering
+		- fast (SSD) pool as overlay on slow (HDD) pool
+	- Shallow copies (Copy-on-Write, CoW)
+		- OpenStack can leverage: snapshot, clone is instantenous
+	</script>
+</section>
+<!-- }}} -->
+
+<!-- Hands-On! {{{ -->
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/cover-hands-on.jpg" class="cover" data-state="cover">
+	# Let's build a storage!
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Hands-on agenda
+
+	- deploy ceph
+	- set up OpenStack with ceph
+	- expand the cluster
+	  - add monitors
+	  - add osds
+	- try to kill ceph!
+	- set up cache tier
+	- learn and have an awesome lot of FUUUUNwehaventsleptinDAAAYS!
+
+	</script>
+</section>
+	
+<section data-markdown>
+	<script type="text/template">
+	## Let's get started
+
+	#### Github:
+	**kmArc11/ibm-ceph-handson**
+
+	- keys
+	- scripts
+	- slides
+
+	#### OpenStack Dashboard:
+
+	**http://ceph-hol-h1.open-test.ibmcloud.com/horizon**
+
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## Let's get started
+
+	- Login to OpenStack Dashboard
+	- Project -> Compute -> Instances
+	- hol##-controller external IP address
+
+	ssh to `hol##-controller` 
+
+	    git clone https://github.com/kmARC11/ibm-ceph-handson
+		cd ibm-ceph-handson/scripts
+
+	- If you dare...
+	  - vars.sh
+	  - all the other scripts
+	</script>
+</section>
+
+<section data-markdown>
+	<script type="text/template">
+	## script 01
+	
+	    ceph-deploy new gavello-mon1
+	    Edit ceph.conf:
+	    ----8<---------------------
+	    public_network = 192.168.1.0/24
+	    ceph_mon_osd_report_timeout=60
+	    ----8<---------------------
+	    ceph-deploy install gavello-mon1 gavello-osd1 gavello-osd2 gavello-osd3 gavello-controller
+	    ceph-deploy mon create gavello-mon1
+
+	    # SSH into gavello-mon1 and watch /etc/ceph/ceph.client.admin.keyring
+	    ceph-deploy gatherkeys gavello-mon1
+	    ceph-deploy admin gavello-controller
+	    ceph-deploy osd create gavello-osd1:/dev/vdb
+	    ceph-deploy osd create gavello-osd2:/dev/vdb
+	    ceph-deploy osd create gavello-osd3:/dev/vdb
+	    ceph osd pool create images 256 256
+	    ceph osd pool create volumes 256 256
+	</script>
+</section>
+<!-- }}} -->
+
+<!-- {{{ END -->
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: false,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+<!-- }}} -->
+
+<!-- vim: set ts=2 sts=2 sw=2 foldmethod=marker foldcolumn=2 filetype=html noet : -->
+
