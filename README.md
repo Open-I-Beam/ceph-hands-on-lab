@@ -1,4 +1,4 @@
-Ceph Hands-On-Lab public repository [bit.do/ibm-ceph][this]
+Ceph Hands-On-Lab public repository [bit.ly/ibm-ceph][this]
 ===========================================================
 
 1. Go to the OpenStack dashboard for you personalized environment:    
@@ -28,5 +28,5 @@ Ceph Hands-On-Lab public repository [bit.do/ibm-ceph][this]
     This will be your working directory. Follow the instructions on the session.  
     Happy storage building! ;-)
 
-[this]: http://bit.do/ibm-ceph
+[this]: http://bit.ly/ibm-ceph
 [dashboard]: example.com
