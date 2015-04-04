@@ -20,5 +20,13 @@ Ceph Hands-On-Lab public repository [bit.do/ibm-ceph][this]
 
         ssh -i id_rsa ubuntu@[ceph-controller-ip]
 
+5. Clone this repository:
+
+        git clone https://github.com/Open-I-Beam/ceph-hands-on-lab
+        cd ceph-hands-on-lab
+
+    This will be your working directory. Follow the instructions on the session.  
+    Happy storage building! ;-)
+
 [this]: http://bit.do/ibm-ceph
 [dashboard]: example.com
