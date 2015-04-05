@@ -16,7 +16,7 @@ Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][this]
     | OpenSSH | [keys/id_rsa](https://raw.githubusercontent.com/Open-I-Beam/ceph-hands-on-lab/master/keys/id_rsa)         |
     | Putty   | [keys/id_rsa.ppk](https://raw.githubusercontent.com/Open-I-Beam/ceph-hands-on-lab/master/keys/id_rsa.ppk) |
 
-4. SSH into controller:  
+4. SSH into the controller VM:  
 
         ssh -i id_rsa ubuntu@[ceph-controller-ip]
 
