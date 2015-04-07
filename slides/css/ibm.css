@@ -1,40 +1,127 @@
+/* General */
+@import url(../reveal.js-3.0.0/css/theme/sky.css);
+@media screen and (min-aspect-ratio: 1280/720) {
+    .reveal {
+        background-size: auto 100%!important;
+    }
+}
+.reveal {
+    background-image :url(../img/image1.jpg);
+    background-position:center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-color: black;
+}
 
 .reveal .slides {
-	text-align: left;
-}
-.reveal .slides .footer {
-	position: absolute; 
-	bottom: 0px;
+    text-align: left;
 }
 
-.reveal .slides .footer p small,
-.reveal .slides .footer p img {
-	vertical-align: middle;
+/* All slides */
+.reveal section {
+    font-family: "Calibri";
+    height: 100%;
+    color: #595959;
+}
+.reveal section h1,
+.reveal section h2,
+.reveal section h3,
+.reveal section h4,
+.reveal section h5,
+.reveal section h6 {
+    font-family: "Calibri";
+    letter-spacing: 0px;
+    text-transform: none;
+    font-weight: bold;
 }
 
-.reveal .slides .cover {
-	text-align: center;
-	padding-top: 20%;
+.reveal section h1 {
+    color: #C31D1F;
+    font-size: 3em;
+}
+.reveal section h2 {
+    letter-spacing: 0px;
+    color: white;
+    font-size: 1.8em;
+    margin-top: 0.15em;
+    margin-left: 0.2em;
+    margin-bottom: 0.8em;
 }
 
-.reveal .slides .cover h1 {
-	-webkit-text-stroke: 1px black;
-	text-stroke: 3px black;
-	text-shadow: 5px 5px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,		1px 1px 0 #000;
+.reveal section h4 {
+    margin-top: 1em;
+    margin-bottom: 0em;
 }
 
-.reveal .slides section img {
-	padding: 0.3em;
-	/* border: none 0px; */
-	/* background: none; */
-	/* box-shadow: none; */
+.reveal section img {
+    padding: 0.3em;
 }
 
-.reveal .slides section h4 {
-	margin-top: 1em;
-	margin-bottom: 0em;
+.reveal section code {
+    color: #bdc3c7;
+}
+/* Footer */
+.reveal .footer {
+    position: absolute; 
+    bottom: 0px;
+    transition: opacity 0.5s;
 }
 
-.reveal .slides section code {
-	color: #bdc3c7;
+.reveal .footer p {
+    margin: 0;
+    line-height: auto;
 }
+
+.reveal .footer p small,
+.reveal .footer p img {
+    vertical-align: middle;
+}
+
+/* Title slide */
+html.title .reveal {
+    background-image: url(../img/image2.jpg)!important;
+}
+
+html.title .reveal .footer {
+    opacity: 0;
+}
+
+.reveal section.title {
+    margin-left: 1em;
+}
+
+.reveal section.title h3 {
+    text-shadow: none;
+    font-family: "Calibri";
+    letter-spacing: 0px;
+    text-transform: none;
+    color: rgb(127, 174, 194);
+    font-size: 1.5em;
+}
+
+.reveal section.title .authors {
+    position: absolute;
+    bottom: 0;
+}
+
+/* Cover slide */
+.reveal section.cover {
+    text-align: center;
+    padding-top: 20%;
+}
+
+.reveal section.cover h1 {
+    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white,     1px 1px 0 white; 
+    color: #C31D1F;
+}
+
+.reveal section.cover h3 {
+    text-shadow: -1px -1px 0 #C31D1F, 1px -1px 0 #C31D1F, -1px 1px 0 #C31D1F,     1px 1px 0 #C31D1F; 
+    color: white;
+}
+
+html.cover .reveal .footer {
+    opacity: 0;
+}
+
+/* vim: set foldmethod=expr foldexpr=getline(v\:lnum)=~'^\\/\\*.*$'?'>1'\:'1' : */
