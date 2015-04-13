@@ -2,7 +2,7 @@ Ceph Hands-On-Lab: [ibm.biz/ceph-hol][url]
 ==========================================
 0. Interested in the slideshow? [Check out here](http://kmarc11.github.io/ibm-ceph-handson/)!
 
-1. Go to the OpenStack dashboard for you personalized environment:
+1. Go to the OpenStack dashboard for you personalized environment. Login using the username/password what you get from the instructors.
 
     [Dashboard](http://ceph-hol.open-test.ibmcloud.com/horizon/)
 
