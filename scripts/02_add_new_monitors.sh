@@ -2,7 +2,7 @@
 source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Installing packages to the new monitors
-$CEPH_DEPLOY install $CLUSTERNAME-mon2 $CLUSTERNAME-mon3
+#$CEPH_DEPLOY install $CLUSTERNAME-mon2 $CLUSTERNAME-mon3
 
 # Deploying monitors
 $CEPH_DEPLOY mon create $CLUSTERNAME-mon2 $CLUSTERNAME-mon3

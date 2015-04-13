@@ -2,7 +2,7 @@
 source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Installing packages to the new osd
-$CEPH_DEPLOY install $CLUSTERNAME-osd4
+#$CEPH_DEPLOY install $CLUSTERNAME-osd4
 
 # Deploying OSD
 $CEPH_DEPLOY osd create $CLUSTERNAME-osd4:/dev/vdb

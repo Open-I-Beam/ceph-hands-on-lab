@@ -20,7 +20,7 @@ else
 fi
 
 # Installing packages to the initial monitor and OSDs
-$CEPH_DEPLOY install $CLUSTERNAME-mon1 $CLUSTERNAME-osd{1..3} $CLUSTERNAME-controller
+#$CEPH_DEPLOY install $CLUSTERNAME-mon1 $CLUSTERNAME-osd{1..3} $CLUSTERNAME-controller
 
 # Deploying monitor
 $CEPH_DEPLOY mon create $CLUSTERNAME-mon1
