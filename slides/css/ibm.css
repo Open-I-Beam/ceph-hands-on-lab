@@ -17,6 +17,7 @@
     text-align: left;
 }
 
+
 /* All slides */
 .reveal section {
     font-family: "Calibri";
@@ -58,7 +59,10 @@
 }
 
 .reveal section code {
-    color: #bdc3c7;
+    color: #C31D1F;
+}
+.reveal section pre code {
+    color: white;
 }
 /* Footer */
 .reveal .footer {
