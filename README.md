@@ -1,5 +1,6 @@
-Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][url]
-===========================================================
+Ceph Hands-On-Lab: [ibm.biz/ceph-hol][url]
+==========================================
+0. Interested in the slideshow? [Check out here](http://kmarc11.github.io/ibm-ceph-handson/)!
 
 1. Go to the OpenStack dashboard for you personalized environment:
 
@@ -24,7 +25,9 @@ Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][url]
 5. Clone this repository:
 
         git clone https://github.com/Open-I-Beam/ceph-hands-on-lab
-        cd ceph-hands-on-lab
+        cd ceph-hands-on-lab/scripts
+        mkdir temp
+        cd temp
 
     This will be your working directory. Follow the instructions on the session.
 
