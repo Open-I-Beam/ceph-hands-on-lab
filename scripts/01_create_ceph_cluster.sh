@@ -1,5 +1,5 @@
 #!/bin/bash
-source `dirname ${BASH_SOURCE[0]}`/vars.sh
+source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Creating new configuration
 $CEPH_DEPLOY new $CLUSTERNAME-mon1

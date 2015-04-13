@@ -1,5 +1,5 @@
 #!/bin/bash
-source `dirname ${BASH_SOURCE[0]}`/vars.sh
+source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Installing packages to the new monitors
 $CEPH_DEPLOY install $CLUSTERNAME-mon2 $CLUSTERNAME-mon3

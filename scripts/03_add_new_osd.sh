@@ -1,5 +1,5 @@
 #!/bin/bash
-source `dirname ${BASH_SOURCE[0]}`/vars.sh
+source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Installing packages to the new osd
 $CEPH_DEPLOY install $CLUSTERNAME-osd4

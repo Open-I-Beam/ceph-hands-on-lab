@@ -1,5 +1,5 @@
 #!/bin/bash
-source `dirname ${BASH_SOURCE[0]}`/vars.sh
+source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Creating new configuration
 $CEPH_DEPLOY purge $CLUSTERNAME-mon{1..3} $CLUSTERNAME-osd{1..4} $CLUSTERNAME-controller

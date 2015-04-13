@@ -1,5 +1,5 @@
 #!/bin/bash
-source `dirname ${BASH_SOURCE[0]}`/vars.sh
+source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 # Creating $CEPH buckets
 $CEPH osd crush add-bucket ssd-bucket root

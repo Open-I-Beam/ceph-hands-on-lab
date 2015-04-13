@@ -1,4 +1,8 @@
-ECHO_ONLY=true
+if [ "$1" = "--run" ]; then
+    ECHO_ONLY=false
+else
+    ECHO_ONLY=true
+fi
 
 # Getting the hostname
 HOSTNAME=`hostname`
