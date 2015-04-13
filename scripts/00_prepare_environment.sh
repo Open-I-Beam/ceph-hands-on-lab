@@ -2,13 +2,16 @@
 source `dirname ${BASH_SOURCE[0]}`/vars.sh $@
 
 echo "Host *" > ~/.ssh/config
-echo "    StrictHostKeyChecking no" > ~/.ssh/config
-echo "    UserKnownHostsFile=/dev/null" > ~/.ssh/config
+echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+echo "    UserKnownHostsFile=/dev/null" >> ~/.ssh/config
 
-ssh $CLUSTERNAME-mon1 apt-get -y install ntp
-ssh $CLUSTERNAME-mon2 apt-get -y install ntp
-ssh $CLUSTERNAME-mon3 apt-get -y install ntp
-ssh $CLUSTERNAME-osd1 apt-get -y install ntp
-ssh $CLUSTERNAME-osd2 apt-get -y install ntp
-ssh $CLUSTERNAME-osd3 apt-get -y install ntp
-ssh $CLUSTERNAME-osd4 apt-get -y install ntp
+for i in mon{1,2,3} osd{1,2,3,4} controller; do
+    ssh $CLUSTERNAME-$i sudo apt-get -y install ntp
+    ssh $CLUSTERNAME-$i sudo service ntp stop
+    ssh $CLUSTERNAME-$i sudo ntpdate pool.ntp.org
+    ssh $CLUSTERNAME-$i sudo service ntp start
+done
+
+for i in mon{1,2,3}; do
+    ssh $CLUSTERNAME-$i sudo service ceph-mon-all restart
+done
