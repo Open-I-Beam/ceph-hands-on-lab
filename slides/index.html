@@ -405,21 +405,21 @@ CRUSH example
 
 <section data-markdown>
 	<script type="text/template">
-#### Write an object
+#### Write an object                   <!-- .element style="position: relative; top: 2em" -->
 ![Crush example 1](img/crush-ex-1.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
 	</script>
 </section>
 
 <section data-markdown>
 	<script type="text/template">
-#### Retrieve an object
+#### Retrieve an object                <!-- .element style="position: relative; top: 2em" -->
 ![Crush example 2](img/crush-ex-2.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
 	</script>
 </section>
 
 <section data-markdown>
 	<script type="text/template">
-#### OSD failure (disk error)
+#### OSD failure (disk error)          <!-- .element style="position: relative; top: 2em" -->
 ![Crush example 3](img/crush-ex-3.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 7.5em; max-height:none; "-->
 #### Data recovery (self-healing)      <!-- .element style="position:absolute;top: 9em;"-->
 ![Crush example 4](img/crush-ex-4.png) <!-- .element style="position:absolute; right:0em; top: 8.5em; height: 7.5em; max-height:none; "-->
@@ -428,13 +428,13 @@ CRUSH example
 
 <section data-markdown>
 	<script type="text/template">
-#### Retrieve an object
-#### (updated CRUSH map)
+#### Retrieve an object                <!-- .element style="position: relative; top: 2em" -->
+#### (updated CRUSH map)               <!-- .element style="position: relative; top: 2em" -->
 ![Crush example 5](img/crush-ex-5.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 16.5em; max-height:none; "-->
 	</script>
 </section>
 
-<section data-markdown data-background="img/yawn.gif" class="cover" data-state="cover">
+<section data-markdown data-transition="slide" data-background-transition="zoom" data-background="img/yawn.gif" class="cover" data-state="cover">
 	<script type="text/template">
 # Are we there yet?!
 
@@ -463,7 +463,7 @@ images can be attached as block devices
 
 <section data-markdown>
 	<script type="text/template">
-#### Object-Block mapping
+#### Object-Block mapping     <!-- .element style="position: relative; top: 2em" -->
 ![Block example](img/rbd.png) <!-- .element style="position:absolute; right:0em; top: 0em; height: 15.5em; max-height:none; "-->
 	</script>
 </section>
@@ -510,7 +510,7 @@ images can be attached as block devices
 	
 <section data-markdown>
 	<script type="text/template">
-## Let's get started
+## Let's get started!
 
 #### Github:
 **[ibm.biz/ceph-hol]()**
@@ -528,7 +528,7 @@ images can be attached as block devices
 
 <section data-markdown>
 	<script type="text/template">
-## Let's get started
+## Let's get started!
 
 - Login to OpenStack Dashboard
 - Project -> Compute -> Instances
@@ -536,8 +536,10 @@ images can be attached as block devices
 
 ssh to `hol##-controller` 
 
-	git clone https://github.com/kmARC11/ibm-ceph-handson
-	cd ibm-ceph-handson/scripts
+		git clone https://github.com/Open-I-Beam/ceph-hands-on-lab
+		cd ceph-hands-on-lab/scripts
+		mkdir tmp
+		cd tmp
 
 - If you dare...
 	- vars.sh
@@ -546,30 +548,6 @@ ssh to `hol##-controller`
 	</script>
 </section>
 
-<section data-markdown>
-	<script type="text/template">
-## script 01
-
-	ceph-deploy new gavello-mon1
-	Edit ceph.conf:
-	----8<---------------------
-	public_network = 192.168.1.0/24
-	ceph_mon_osd_report_timeout=60
-	----8<---------------------
-	ceph-deploy install gavello-mon1 gavello-osd1 gavello-osd2 gavello-osd3 gavello-controller
-	ceph-deploy mon create gavello-mon1
-
-	# SSH into gavello-mon1 and watch /etc/ceph/ceph.client.admin.keyring
-	ceph-deploy gatherkeys gavello-mon1
-	ceph-deploy admin gavello-controller
-	ceph-deploy osd create gavello-osd1:/dev/vdb
-	ceph-deploy osd create gavello-osd2:/dev/vdb
-	ceph-deploy osd create gavello-osd3:/dev/vdb
-	ceph osd pool create images 256 256
-	ceph osd pool create volumes 256 256
-
-	</script>
-</section>
 <!-- }}} -->
 
 <!-- {{{ END -->
