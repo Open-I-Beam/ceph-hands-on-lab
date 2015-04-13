@@ -3,11 +3,11 @@ Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][url]
 
 1. Go to the OpenStack dashboard for you personalized environment:
 
-    [TBD][dashboard]
+    [Dashboard](http://ceph-hol.open-test.ibmcloud.com/horizon/)
 
 2. Find your **ceph-controller** machine's IP address:
 
-    ![TBD](imgurl)
+    ![dashboard](https://raw.githubusercontent.com/Open-I-Beam/ceph-hands-on-lab/master/doc/dashboard.png)
 
 3. To login to the virtual machines, download the ssh private key:
 
@@ -16,8 +16,9 @@ Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][url]
     | OpenSSH | [keys/id_rsa][1]     |
     | Putty   | [keys/id_rsa.ppk][2] |
 
-4. SSH into the controller VM:
+4. SSH into the controller VM using the downloaded private key:
 
+        chmod go-rwx id_rsa
         ssh -i id_rsa ubuntu@[ceph-controller-ip]
 
 5. Clone this repository:
@@ -30,7 +31,6 @@ Ceph Hands-On-Lab public repository [ibm.biz/ceph-hol][url]
     Happy Storage building! ;-)
 
 [url]: http://ibm.biz/ceph-hol
-[dashboard]: example.com
 [1]:https://raw.githubusercontent.com/Open-I-Beam/ceph-hands-on-lab/master/keys/id_rsa
 [2]:https://raw.githubusercontent.com/Open-I-Beam/ceph-hands-on-lab/master/keys/id_rsa.ppk
 
