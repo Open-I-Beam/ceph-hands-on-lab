@@ -20,7 +20,7 @@
 
 /* All slides */
 .reveal section {
-    font-family: "Calibri";
+    font-family: "Calibri", "sans";
     height: 100%;
     color: #595959;
 }
@@ -30,7 +30,7 @@
 .reveal section h4,
 .reveal section h5,
 .reveal section h6 {
-    font-family: "Calibri";
+    font-family: "Calibri", "sans";
     letter-spacing: 0px;
     text-transform: none;
     font-weight: bold;
